@@ -1,31 +1,29 @@
+import {ContactsService} from "../../providers/contacts-service/contacts.service";
 import {DetailsPage} from "../details-page/details-page";
-import {GitHubService} from "../../providers/git-hub-service/git-hub-service";
 import {Page, NavController} from 'ionic-angular';
+import { OnInit } from '@angular/core';
 
 @Page({
   templateUrl: 'build/pages/home/home.html',
-  providers: [GitHubService]
+  providers: [ContactsService]
 })
-export class HomePage {
-  public foundRepos;
-  public username:string;
+export class HomePage implements OnInit {
+  public contacts;
 
-  constructor(private _gitHubService: GitHubService,
+  constructor(private _contactsService: ContactsService,
               private _navController: NavController) {
   }
 
-  goToDetails(repo:any){
-    this._navController.push(DetailsPage, { repo: repo });
+  ngOnInit():any {
+    this.contacts = this._contactsService.getData();
   }
 
-  getRepos() {
-    this._gitHubService.getRepos(this.username).subscribe(
-      data => {
-        this.foundRepos = data.json();
-      },
-      err => console.log(err),
-      () => console.log('getRepos completed')
-    );
-  }
+  // goToDetails(repo:any){
+  //   this._navController.push(DetailsPage, { repo: repo });
+  // }
+
+  // getRepos() {
+  //
+  // }
 
 }
